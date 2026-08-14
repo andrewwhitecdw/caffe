@@ -1,4 +1,5 @@
 import numpy as np
+import warnings
 
 import caffe
 
@@ -149,7 +150,10 @@ def score_det(gt_bbox_list, det_bbox_list):
         temp = np.append(tp, fp)
         temp = np.append(temp, tn)
         temp = temp.reshape([temp.size//5, 5])
-        matched_bbox[k, 0:temp.shape[0], :] = temp
+        n_matches = min(temp.shape[0], MAX_BOXES)
+        matched_bbox[k, 0:n_matches, :] = temp[0:n_matches, :]
+        if n_matches < temp.shape[0]:
+            warnings.warn('Number of scored detections ({}) exceeds MAX_BOXES ({}); truncating.'.format(temp.shape[0], MAX_BOXES))
 
     return matched_bbox
 
