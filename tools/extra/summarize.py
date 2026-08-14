@@ -113,7 +113,7 @@ def summarize_net(net):
             arg_str = ''
 
         if len(lr.param) > 0:
-            param_strs = map(format_param, lr.param)
+            param_strs = list(map(format_param, lr.param))
             if max(map(len, param_strs)) > 0:
                 param_str = '({})'.format(', '.join(param_strs))
             else:
